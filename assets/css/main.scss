@@ -1,0 +1,75 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
+@charset "utf-8";
+
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
+@import "minimal-mistakes"; // main partials
+
+
+// global font size
+body{
+  font: 16px/1.4 $helvetica;
+}
+
+
+
+// Type scale
+.page__lead {
+    // font-family: $global-font-family;
+    font-size: $type-size-6;
+  }
+
+// .feature__wrapper{
+//   position: relative;
+//   // left: 20%;
+//   // width: 80%;
+//   text-justify: distribute-all-lines;
+// }
+// .archive__subtitle{
+//   position: relative;
+//   // left: 20%;
+//   // width: 65%;
+// }
+// .entries-list{
+//   position: relative;
+//   // left: 20%;
+//   // width: 65%;
+// }
+/* Twitter Plugin */
+// .sidebar .twitter{
+//   position: relative;
+//   padding-right: 70%;
+//   left: 15%;
+//   height: auto;
+//   width: auto;
+//   top: 15%;
+//   overflow: hidden;
+// }
+
+// .sidebar .twitter a{
+//   position: absolute;
+//   top:0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+// }
+.twitterborder {
+  width:300px;
+  height:300px;
+  margin-top:3px;
+  margin-right:5%;
+  float:right;
+  background:#707070;
+  text-align: center;
+}
+.table{
+  display:table;
+  height: 100%;
+  width: 100%;
+}
+.table-cell{
+  display:table-cell;
+  vertical-align: middle;
+}
