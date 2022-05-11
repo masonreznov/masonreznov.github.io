@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-05-11T15:40:40+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Michael’s Blog</title><subtitle>Ph.D candidate. NIT Silchar India</subtitle><author><name>Michael Salam</name><email>salam_rs@cse.nits.ac.in</email></author><entry><title type="html">Installing Moses: The Statistical Machine Translation Tool</title><link href="http://localhost:4000/installing-moses-the-statistical-machine-translation-toolkit/" rel="alternate" type="text/html" title="Installing Moses: The Statistical Machine Translation Tool" /><published>2020-11-23T00:00:00+05:30</published><updated>2020-11-23T00:00:00+05:30</updated><id>http://localhost:4000/installing-moses-the-statistical-machine-translation-toolkit</id><content type="html" xml:base="http://localhost:4000/installing-moses-the-statistical-machine-translation-toolkit/">&lt;!-- 
+
+&lt;div class=&quot;feature__wrapper&quot;&gt;
+
+  
+
+&lt;/div&gt;
+ --&gt;
+
+&lt;h3 id=&quot;what-is-machine-translation&quot;&gt;What is machine translation?&lt;/h3&gt;
+
+&lt;!-- ![translate](https://media1.tenor.com/images/b890252f9818ba8ed3e8265765d7dc59/tenor.gif?itemid=14803317) --&gt;
+
+&lt;!-- _includes/image.html --&gt;
+&lt;div class=&quot;image-wrapper&quot;&gt;
+    
+        &lt;img src=&quot;http://localhost:4000/assets/images/translate.gif&quot; alt=&quot;translate&quot; /&gt;
+    
+    
+        &lt;p class=&quot;image-caption&quot;&gt;Image source: https://tenor.com/view/google-translate-chan-yumis-arts-gtc-gif-14803317&lt;/p&gt;
+    
+&lt;/div&gt;
+&lt;p&gt;Machine translation is the task for translating from one language lets say &lt;em&gt;English&lt;/em&gt; to another language for an instance &lt;em&gt;Japanese&lt;/em&gt;. Primarily there are two major techniques to achieve this task, one is Statistical Machine Translation(SMT) and the other is Neural Machine Translation(NMT). The first appraoch converts the translation task to a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;noisy channel&lt;/code&gt; model while the second one uses a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sequence-to-sequence&lt;/code&gt; deeplearning method.&lt;/p&gt;
+
+&lt;p&gt;In this post, we will cover the statistical one and to be specific we will walk through the installation for one of the most widely used SMT toolkit: the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mosesdecoder&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&quot;prerequisites&quot;&gt;Prerequisites:&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&quot;language-g++&quot;&gt;git 
+subversion
+automake
+libtool
+zlib1g-dev
+libboost-all-dev
+libbz2-dev
+liblzma-dev
+python-dev
+graphviz
+imagemagick
+make
+cmake
+libgoogle-perftools-dev
+autoconf
+doxygen
+p7zip
+gawk
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;step-1-installing-the-prerequisites&quot;&gt;Step-1: Installing the prerequisites&lt;/h3&gt;
+&lt;p&gt;Put all these required libraries inside a file &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;requirements.txt&lt;/code&gt; and install all of them using a single command&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo apt-get install $(cat requirements.txt)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;step-2-installation-of-an-alignment-tool&quot;&gt;Step-2: Installation of an alignment tool&lt;/h3&gt;
+&lt;p&gt;We will install &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mgiza++&lt;/code&gt; alignment tool which is the multi-threaded version of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;giza++&lt;/code&gt;.
+Clone the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mgiza++&lt;/code&gt; repo&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ mkdir tools
+$ cd tools
+$ git clone https://github.com/moses-smt/mgiza.git
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Building the repo&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd mgiza/mgizapp
+$ cmake .
+$ make
+$ make install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;step-3-language-modelling-toolkit-installation&quot;&gt;Step-3: Language modelling toolkit installation&lt;/h3&gt;
+&lt;p&gt;Mosesdecoder comes with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;KenLM&lt;/code&gt; as the default language modelling tool. However, we will be installing a third party language modelling tool &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SRILM&lt;/code&gt;.
+First, change back to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tools/&lt;/code&gt; directory.&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ mkdir srilm
+$ cd srilm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;(This step is crucial since &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SRILM&lt;/code&gt; expands in the current directory and not in a sub-directory)&lt;/p&gt;
+
+&lt;p&gt;Register and download the latest srilm tool from the srilm &lt;a href=&quot;http://www.speech.sri.com/projects/srilm/download.html&quot;&gt;download page&lt;/a&gt; which is a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.tgz&lt;/code&gt; file and move it to the above directory which was just created.&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tar -xzvf &amp;lt;srilm-version.tgz&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;After this we need to set the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SRILM&lt;/code&gt; path in a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Makefile&lt;/code&gt;. Specifically, the main path of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;srilm&lt;/code&gt; should be pointed in here. The line to be modified looks like this&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SRILM = /home/speech/stolcke/project/srilm/devel
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;which should be modified to&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SRILM = &amp;lt;path/to/your/srilm/main/directory&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Then make using&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ make World
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;step-4-building-boost&quot;&gt;Step-4: Building &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;boost&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;Change back to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tools/&lt;/code&gt; directory. For this installation, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;boost_1_64_0&lt;/code&gt; version is used.&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz
+$ unzip the boost 
+$ cd boost_1_64_0/
+$ ./bootstrap.sh 
+$ ./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-j4&lt;/code&gt; is for multiprocessing purpose where &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;4&lt;/code&gt; is the number of simulataneous tasks.&lt;/p&gt;
+
+&lt;h3 id=&quot;step-5-finally-compilation-of-the-moses-tool--with-the-language-modelsrilm&quot;&gt;Step-5: Finally compilation of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;moses&lt;/code&gt; tool  with the language model(SRILM).&lt;/h3&gt;
+&lt;p&gt;From the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tools/&lt;/code&gt; directory&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ git clone git://github.com/moses-smt/mosesdecoder.git
+$ cd mosesdecoder
+$ ./bjam --with-srilm=&amp;lt;path/to/Srilm&amp;gt; --with-boost=&amp;lt;path/to/boost&amp;gt; -j4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;If the building and linkink was successful, then a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SUCCESS&lt;/code&gt; prompt will be shown at the end.&lt;/p&gt;
+
+&lt;p&gt;To sum up, the directory tree should look like this:&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;|-tools
+|    |-srilm
+|    |-boost
+|    |-mosesdecoder
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In the next post, we will walk through the training steps for an SMT system, right from data acquisition, data processing, training to model evaluation.&lt;/p&gt;
+
+&lt;h3 id=&quot;references&quot;&gt;References&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;http://mt-archive.info/MTS-2007-Koehn-3.pdf&quot;&gt;http://mt-archive.info/MTS-2007-Koehn-3.pdf&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.aclweb.org/anthology/P07-2045.pdf&quot;&gt;https://www.aclweb.org/anthology/P07-2045.pdf&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.statmt.org/moses_steps.html&quot;&gt;http://www.statmt.org/moses_steps.html&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.speech.sri.com/projects/srilm/download.html&quot;&gt;http://www.speech.sri.com/projects/srilm/download.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div id=&quot;disqus_thread&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://https-masonreznov-github-io.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+&lt;/script&gt;
+
+&lt;noscript&gt;Please enable JavaScript to view the &lt;a href=&quot;https://disqus.com/?ref_noscript&quot;&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt;
+
+&lt;!-- utterances comment snippet 
+&lt;script src=&quot;https://utteranc.es/client.js&quot;
+        repo=&quot;masonreznov/masonreznov.github.io&quot;
+        issue-term=&quot;pathname&quot;
+        label=&quot;comment&quot;
+        theme=&quot;github-light&quot;
+        crossorigin=&quot;anonymous&quot;
+        async&gt;
+&lt;/script&gt; --&gt;</content><author><name>Michael Salam</name><email>salam_rs@cse.nits.ac.in</email></author><summary type="html">What is machine translation? Image source: https://tenor.com/view/google-translate-chan-yumis-arts-gtc-gif-14803317 Machine translation is the task for translating from one language lets say English to another language for an instance Japanese. Primarily there are two major techniques to achieve this task, one is Statistical Machine Translation(SMT) and the other is Neural Machine Translation(NMT). The first appraoch converts the translation task to a noisy channel model while the second one uses a sequence-to-sequence deeplearning method. In this post, we will cover the statistical one and to be specific we will walk through the installation for one of the most widely used SMT toolkit: the mosesdecoder. Prerequisites: git subversion automake libtool zlib1g-dev libboost-all-dev libbz2-dev liblzma-dev python-dev graphviz imagemagick make cmake libgoogle-perftools-dev autoconf doxygen p7zip gawk Step-1: Installing the prerequisites Put all these required libraries inside a file requirements.txt and install all of them using a single command $ sudo apt-get install $(cat requirements.txt) Step-2: Installation of an alignment tool We will install mgiza++ alignment tool which is the multi-threaded version of giza++. Clone the mgiza++ repo $ mkdir tools $ cd tools $ git clone https://github.com/moses-smt/mgiza.git Building the repo $ cd mgiza/mgizapp $ cmake . $ make $ make install Step-3: Language modelling toolkit installation Mosesdecoder comes with KenLM as the default language modelling tool. However, we will be installing a third party language modelling tool SRILM. First, change back to tools/ directory. $ mkdir srilm $ cd srilm (This step is crucial since SRILM expands in the current directory and not in a sub-directory) Register and download the latest srilm tool from the srilm download page which is a .tgz file and move it to the above directory which was just created. $ tar -xzvf &amp;lt;srilm-version.tgz&amp;gt; After this we need to set the SRILM path in a Makefile. Specifically, the main path of the srilm should be pointed in here. The line to be modified looks like this SRILM = /home/speech/stolcke/project/srilm/devel which should be modified to SRILM = &amp;lt;path/to/your/srilm/main/directory&amp;gt; Then make using $ make World Step-4: Building boost Change back to tools/ directory. For this installation, boost_1_64_0 version is used. $ wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz $ unzip the boost $ cd boost_1_64_0/ $ ./bootstrap.sh $ ./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE NOTE: -j4 is for multiprocessing purpose where 4 is the number of simulataneous tasks. Step-5: Finally compilation of the moses tool with the language model(SRILM). From the tools/ directory $ git clone git://github.com/moses-smt/mosesdecoder.git $ cd mosesdecoder $ ./bjam --with-srilm=&amp;lt;path/to/Srilm&amp;gt; --with-boost=&amp;lt;path/to/boost&amp;gt; -j4 If the building and linkink was successful, then a SUCCESS prompt will be shown at the end. To sum up, the directory tree should look like this: |-tools | |-srilm | |-boost | |-mosesdecoder In the next post, we will walk through the training steps for an SMT system, right from data acquisition, data processing, training to model evaluation. References http://mt-archive.info/MTS-2007-Koehn-3.pdf https://www.aclweb.org/anthology/P07-2045.pdf http://www.statmt.org/moses_steps.html http://www.speech.sri.com/projects/srilm/download.html Please enable JavaScript to view the comments powered by Disqus.</summary></entry></feed>
