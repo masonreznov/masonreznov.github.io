@@ -10,7 +10,7 @@
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>Installing Moses: The Statistical Machine Translation Tool - Michael’s Blog</title>
-<meta name="description" content="What is machine translation?                                      Image source: https://tenor.com/view/google-translate-chan-yumis-arts-gtc-gif-14803317       Machine translation is the task for translating from one language lets say English to another language for an instance Japanese. Primarily there are two major techniques to achieve this task, one is Statistical Machine Translation(SMT) and the other is Neural Machine Translation(NMT). The first appraoch converts the translation task to a noisy channel model while the second one uses a sequence-to-sequence deeplearning method.  In this post, we will cover the statistical one and to be specific we will walk through the installation for one of the most widely used SMT toolkit: the mosesdecoder. Prerequisites: git  subversion automake libtool zlib1g-dev libboost-all-dev libbz2-dev liblzma-dev python-dev graphviz imagemagick make cmake libgoogle-perftools-dev autoconf doxygen p7zip gawk  Step-1: Installing the prerequisites Put all these required libraries inside a file requirements.txt and install all of them using a single command $ sudo apt-get install $(cat requirements.txt)   Step-2: Installation of an alignment tool We will install mgiza++ alignment tool which is the multi-threaded version of giza++. Clone the mgiza++ repo $ mkdir tools $ cd tools $ git clone https://github.com/moses-smt/mgiza.git  Building the repo $ cd mgiza/mgizapp $ cmake . $ make $ make install   Step-3: Language modelling toolkit installation Mosesdecoder comes with KenLM as the default language modelling tool. However, we will be installing a third party language modelling tool SRILM. First, change back to tools/ directory. $ mkdir srilm $ cd srilm  (This step is crucial since SRILM expands in the current directory and not in a sub-directory)  Register and download the latest srilm tool from the srilm download page which is a .tgz file and move it to the above directory which was just created. $ tar -xzvf &lt;srilm-version.tgz&gt;  After this we need to set the SRILM path in a Makefile. Specifically, the main path of the srilm should be pointed in here. The line to be modified looks like this SRILM = /home/speech/stolcke/project/srilm/devel  which should be modified to SRILM = &lt;path/to/your/srilm/main/directory&gt;  Then make using $ make World   Step-4: Building boost Change back to tools/ directory. For this installation, boost_1_64_0 version is used. $ wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz $ unzip the boost  $ cd boost_1_64_0/ $ ./bootstrap.sh  $ ./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE  NOTE: -j4 is for multiprocessing purpose where 4 is the number of simulataneous tasks.  Step-5: Finally compilation of the moses tool  with the language model(SRILM). From the tools/ directory $ git clone git://github.com/moses-smt/mosesdecoder.git $ cd mosesdecoder $ ./bjam --with-srilm=&lt;path/to/Srilm&gt; --with-boost=&lt;path/to/boost&gt; -j4  If the building and linkink was successful, then a SUCCESS prompt will be shown at the end.  To sum up, the directory tree should look like this: |-tools |    |-srilm |    |-boost |    |-mosesdecoder    In the next post, we will walk through the training steps for an SMT system, right from data acquisition, data processing, training to model evaluation.  References    http://mt-archive.info/MTS-2007-Koehn-3.pdf   https://www.aclweb.org/anthology/P07-2045.pdf   http://www.statmt.org/moses_steps.html   http://www.speech.sri.com/projects/srilm/download.html      Please enable JavaScript to view the comments powered by Disqus.">
+<meta name="description" content="What is machine translation?        Image source: https://tenor.com/view/google-translate-chan-yumis-arts-gtc-gif-14803317   Machine translation is the task for translating from one language lets say English to another language for an instance Japanese. Primarily there are two major techniques to achieve this task, one is Statistical Machine Translation(SMT) and the other is Neural Machine Translation(NMT). The first appraoch converts the translation task to a noisy channel model while the second one uses a sequence-to-sequence deeplearning method.  In this post, we will cover the statistical one and to be specific we will walk through the installation for one of the most widely used SMT toolkit: the mosesdecoder.  Prerequisites  g++ git  subversion automake libtool zlib1g-dev libboost-all-dev libbz2-dev liblzma-dev python-dev graphviz imagemagick make cmake libgoogle-perftools-dev autoconf doxygen p7zip gawk   Step-1: Installing the prerequisites  Put all these required libraries inside a file requirements.txt and install all of them using a single command  sudo apt-get install $(cat requirements.txt)   Step-2: Installation of an alignment tool  We will install mgiza++ alignment tool which is the multi-threaded version of giza++. Clone the mgiza++ repo  mkdir tools cd tools git clone https://github.com/moses-smt/mgiza.git   Building the repo  cd mgiza/mgizapp cmake . make make install   Step-3: Language modelling toolkit installation  Mosesdecoder comes with KenLM as the default language modelling tool. However, we will be installing a third party language modelling tool SRILM. First, change back to tools/ directory.  mkdir srilm cd srilm   (This step is crucial since SRILM expands in the current directory and not in a sub-directory)  Register and download the latest srilm tool from the srilm download page which is a .tgz file and move it to the above directory which was just created.  tar -xzvf &lt;srilm-version.tgz&gt;   After this we need to set the SRILM path in a Makefile. Specifically, the main path of the srilm should be pointed in here. The line to be modified looks like this  SRILM = /home/speech/stolcke/project/srilm/devel   which should be modified to  SRILM = &lt;path/to/your/srilm/main/directory&gt;   Then make using  make World   Step-4: Building boost  Change back to tools/ directory. For this installation, boost_1_64_0 version is used.  wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz unzip the boost  cd boost_1_64_0/ ./bootstrap.sh  ./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE   NOTE: -j4 is for multiprocessing purpose where 4 is the number of simulataneous tasks.  Step-5: Finally compilation of the moses tool  with the language model(SRILM)  From the tools/ directory  git clone git://github.com/moses-smt/mosesdecoder.git cd mosesdecoder ./bjam --with-srilm=&lt;path/to/Srilm&gt; --with-boost=&lt;path/to/boost&gt; -j4   If the building and linkink was successful, then a SUCCESS prompt will be shown at the end.  To sum up, the directory tree should look like this:  |-tools |    |-srilm |    |-boost |    |-mosesdecoder    In the next post, we will walk through the training steps for an SMT system, right from data acquisition, data processing, training to model evaluation.  References     http://mt-archive.info/MTS-2007-Koehn-3.pdf   https://www.aclweb.org/anthology/P07-2045.pdf   http://www.statmt.org/moses_steps.html   http://www.speech.sri.com/projects/srilm/download.html      Please enable JavaScript to view the comments powered by Disqus.">
 
 
   <meta name="author" content="Michael Salam">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="http://localhost:4000/installing-moses-the-statistical-machine-translation-toolkit/">
 
 
-  <meta property="og:description" content="What is machine translation?                                      Image source: https://tenor.com/view/google-translate-chan-yumis-arts-gtc-gif-14803317       Machine translation is the task for translating from one language lets say English to another language for an instance Japanese. Primarily there are two major techniques to achieve this task, one is Statistical Machine Translation(SMT) and the other is Neural Machine Translation(NMT). The first appraoch converts the translation task to a noisy channel model while the second one uses a sequence-to-sequence deeplearning method.  In this post, we will cover the statistical one and to be specific we will walk through the installation for one of the most widely used SMT toolkit: the mosesdecoder. Prerequisites: git  subversion automake libtool zlib1g-dev libboost-all-dev libbz2-dev liblzma-dev python-dev graphviz imagemagick make cmake libgoogle-perftools-dev autoconf doxygen p7zip gawk  Step-1: Installing the prerequisites Put all these required libraries inside a file requirements.txt and install all of them using a single command $ sudo apt-get install $(cat requirements.txt)   Step-2: Installation of an alignment tool We will install mgiza++ alignment tool which is the multi-threaded version of giza++. Clone the mgiza++ repo $ mkdir tools $ cd tools $ git clone https://github.com/moses-smt/mgiza.git  Building the repo $ cd mgiza/mgizapp $ cmake . $ make $ make install   Step-3: Language modelling toolkit installation Mosesdecoder comes with KenLM as the default language modelling tool. However, we will be installing a third party language modelling tool SRILM. First, change back to tools/ directory. $ mkdir srilm $ cd srilm  (This step is crucial since SRILM expands in the current directory and not in a sub-directory)  Register and download the latest srilm tool from the srilm download page which is a .tgz file and move it to the above directory which was just created. $ tar -xzvf &lt;srilm-version.tgz&gt;  After this we need to set the SRILM path in a Makefile. Specifically, the main path of the srilm should be pointed in here. The line to be modified looks like this SRILM = /home/speech/stolcke/project/srilm/devel  which should be modified to SRILM = &lt;path/to/your/srilm/main/directory&gt;  Then make using $ make World   Step-4: Building boost Change back to tools/ directory. For this installation, boost_1_64_0 version is used. $ wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz $ unzip the boost  $ cd boost_1_64_0/ $ ./bootstrap.sh  $ ./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE  NOTE: -j4 is for multiprocessing purpose where 4 is the number of simulataneous tasks.  Step-5: Finally compilation of the moses tool  with the language model(SRILM). From the tools/ directory $ git clone git://github.com/moses-smt/mosesdecoder.git $ cd mosesdecoder $ ./bjam --with-srilm=&lt;path/to/Srilm&gt; --with-boost=&lt;path/to/boost&gt; -j4  If the building and linkink was successful, then a SUCCESS prompt will be shown at the end.  To sum up, the directory tree should look like this: |-tools |    |-srilm |    |-boost |    |-mosesdecoder    In the next post, we will walk through the training steps for an SMT system, right from data acquisition, data processing, training to model evaluation.  References    http://mt-archive.info/MTS-2007-Koehn-3.pdf   https://www.aclweb.org/anthology/P07-2045.pdf   http://www.statmt.org/moses_steps.html   http://www.speech.sri.com/projects/srilm/download.html      Please enable JavaScript to view the comments powered by Disqus.">
+  <meta property="og:description" content="What is machine translation?        Image source: https://tenor.com/view/google-translate-chan-yumis-arts-gtc-gif-14803317   Machine translation is the task for translating from one language lets say English to another language for an instance Japanese. Primarily there are two major techniques to achieve this task, one is Statistical Machine Translation(SMT) and the other is Neural Machine Translation(NMT). The first appraoch converts the translation task to a noisy channel model while the second one uses a sequence-to-sequence deeplearning method.  In this post, we will cover the statistical one and to be specific we will walk through the installation for one of the most widely used SMT toolkit: the mosesdecoder.  Prerequisites  g++ git  subversion automake libtool zlib1g-dev libboost-all-dev libbz2-dev liblzma-dev python-dev graphviz imagemagick make cmake libgoogle-perftools-dev autoconf doxygen p7zip gawk   Step-1: Installing the prerequisites  Put all these required libraries inside a file requirements.txt and install all of them using a single command  sudo apt-get install $(cat requirements.txt)   Step-2: Installation of an alignment tool  We will install mgiza++ alignment tool which is the multi-threaded version of giza++. Clone the mgiza++ repo  mkdir tools cd tools git clone https://github.com/moses-smt/mgiza.git   Building the repo  cd mgiza/mgizapp cmake . make make install   Step-3: Language modelling toolkit installation  Mosesdecoder comes with KenLM as the default language modelling tool. However, we will be installing a third party language modelling tool SRILM. First, change back to tools/ directory.  mkdir srilm cd srilm   (This step is crucial since SRILM expands in the current directory and not in a sub-directory)  Register and download the latest srilm tool from the srilm download page which is a .tgz file and move it to the above directory which was just created.  tar -xzvf &lt;srilm-version.tgz&gt;   After this we need to set the SRILM path in a Makefile. Specifically, the main path of the srilm should be pointed in here. The line to be modified looks like this  SRILM = /home/speech/stolcke/project/srilm/devel   which should be modified to  SRILM = &lt;path/to/your/srilm/main/directory&gt;   Then make using  make World   Step-4: Building boost  Change back to tools/ directory. For this installation, boost_1_64_0 version is used.  wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz unzip the boost  cd boost_1_64_0/ ./bootstrap.sh  ./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE   NOTE: -j4 is for multiprocessing purpose where 4 is the number of simulataneous tasks.  Step-5: Finally compilation of the moses tool  with the language model(SRILM)  From the tools/ directory  git clone git://github.com/moses-smt/mosesdecoder.git cd mosesdecoder ./bjam --with-srilm=&lt;path/to/Srilm&gt; --with-boost=&lt;path/to/boost&gt; -j4   If the building and linkink was successful, then a SUCCESS prompt will be shown at the end.  To sum up, the directory tree should look like this:  |-tools |    |-srilm |    |-boost |    |-mosesdecoder    In the next post, we will walk through the training steps for an SMT system, right from data acquisition, data processing, training to model evaluation.  References     http://mt-archive.info/MTS-2007-Koehn-3.pdf   https://www.aclweb.org/anthology/P07-2045.pdf   http://www.statmt.org/moses_steps.html   http://www.speech.sri.com/projects/srilm/download.html      Please enable JavaScript to view the comments powered by Disqus.">
 
 
 
@@ -288,7 +288,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Installing Moses: The Statistical Machine Translation Tool">
-    <meta itemprop="description" content="What is machine translation?                            Image source: https://tenor.com/view/google-translate-chan-yumis-arts-gtc-gif-14803317    Machine translation is the task for translating from one language lets say English to another language for an instance Japanese. Primarily there are two major techniques to achieve this task, one is Statistical Machine Translation(SMT) and the other is Neural Machine Translation(NMT). The first appraoch converts the translation task to a noisy channel model while the second one uses a sequence-to-sequence deeplearning method.In this post, we will cover the statistical one and to be specific we will walk through the installation for one of the most widely used SMT toolkit: the mosesdecoder.Prerequisites:git subversionautomakelibtoolzlib1g-devlibboost-all-devlibbz2-devliblzma-devpython-devgraphvizimagemagickmakecmakelibgoogle-perftools-devautoconfdoxygenp7zipgawkStep-1: Installing the prerequisitesPut all these required libraries inside a file requirements.txt and install all of them using a single command$ sudo apt-get install $(cat requirements.txt)Step-2: Installation of an alignment toolWe will install mgiza++ alignment tool which is the multi-threaded version of giza++.Clone the mgiza++ repo$ mkdir tools$ cd tools$ git clone https://github.com/moses-smt/mgiza.gitBuilding the repo$ cd mgiza/mgizapp$ cmake .$ make$ make installStep-3: Language modelling toolkit installationMosesdecoder comes with KenLM as the default language modelling tool. However, we will be installing a third party language modelling tool SRILM.First, change back to tools/ directory.$ mkdir srilm$ cd srilm(This step is crucial since SRILM expands in the current directory and not in a sub-directory)Register and download the latest srilm tool from the srilm download page which is a .tgz file and move it to the above directory which was just created.$ tar -xzvf &lt;srilm-version.tgz&gt;After this we need to set the SRILM path in a Makefile. Specifically, the main path of the srilm should be pointed in here. The line to be modified looks like thisSRILM = /home/speech/stolcke/project/srilm/develwhich should be modified toSRILM = &lt;path/to/your/srilm/main/directory&gt;Then make using$ make WorldStep-4: Building boostChange back to tools/ directory. For this installation, boost_1_64_0 version is used.$ wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz$ unzip the boost $ cd boost_1_64_0/$ ./bootstrap.sh $ ./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURENOTE: -j4 is for multiprocessing purpose where 4 is the number of simulataneous tasks.Step-5: Finally compilation of the moses tool  with the language model(SRILM).From the tools/ directory$ git clone git://github.com/moses-smt/mosesdecoder.git$ cd mosesdecoder$ ./bjam --with-srilm=&lt;path/to/Srilm&gt; --with-boost=&lt;path/to/boost&gt; -j4If the building and linkink was successful, then a SUCCESS prompt will be shown at the end.To sum up, the directory tree should look like this:|-tools|    |-srilm|    |-boost|    |-mosesdecoderIn the next post, we will walk through the training steps for an SMT system, right from data acquisition, data processing, training to model evaluation.References  http://mt-archive.info/MTS-2007-Koehn-3.pdf  https://www.aclweb.org/anthology/P07-2045.pdf  http://www.statmt.org/moses_steps.html  http://www.speech.sri.com/projects/srilm/download.htmlPlease enable JavaScript to view the comments powered by Disqus.">
+    <meta itemprop="description" content="What is machine translation?    Image source: https://tenor.com/view/google-translate-chan-yumis-arts-gtc-gif-14803317Machine translation is the task for translating from one language lets say English to another language for an instance Japanese. Primarily there are two major techniques to achieve this task, one is Statistical Machine Translation(SMT) and the other is Neural Machine Translation(NMT). The first appraoch converts the translation task to a noisy channel model while the second one uses a sequence-to-sequence deeplearning method.In this post, we will cover the statistical one and to be specific we will walk through the installation for one of the most widely used SMT toolkit: the mosesdecoder.Prerequisitesg++git subversionautomakelibtoolzlib1g-devlibboost-all-devlibbz2-devliblzma-devpython-devgraphvizimagemagickmakecmakelibgoogle-perftools-devautoconfdoxygenp7zipgawkStep-1: Installing the prerequisitesPut all these required libraries inside a file requirements.txt and install all of them using a single commandsudo apt-get install $(cat requirements.txt)Step-2: Installation of an alignment toolWe will install mgiza++ alignment tool which is the multi-threaded version of giza++.Clone the mgiza++ repomkdir toolscd toolsgit clone https://github.com/moses-smt/mgiza.gitBuilding the repocd mgiza/mgizappcmake .makemake installStep-3: Language modelling toolkit installationMosesdecoder comes with KenLM as the default language modelling tool. However, we will be installing a third party language modelling tool SRILM.First, change back to tools/ directory.mkdir srilmcd srilm(This step is crucial since SRILM expands in the current directory and not in a sub-directory)Register and download the latest srilm tool from the srilm download page which is a .tgz file and move it to the above directory which was just created.tar -xzvf &lt;srilm-version.tgz&gt;After this we need to set the SRILM path in a Makefile. Specifically, the main path of the srilm should be pointed in here. The line to be modified looks like thisSRILM = /home/speech/stolcke/project/srilm/develwhich should be modified toSRILM = &lt;path/to/your/srilm/main/directory&gt;Then make usingmake WorldStep-4: Building boostChange back to tools/ directory. For this installation, boost_1_64_0 version is used.wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gzunzip the boost cd boost_1_64_0/./bootstrap.sh ./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURENOTE: -j4 is for multiprocessing purpose where 4 is the number of simulataneous tasks.Step-5: Finally compilation of the moses tool  with the language model(SRILM)From the tools/ directorygit clone git://github.com/moses-smt/mosesdecoder.gitcd mosesdecoder./bjam --with-srilm=&lt;path/to/Srilm&gt; --with-boost=&lt;path/to/boost&gt; -j4If the building and linkink was successful, then a SUCCESS prompt will be shown at the end.To sum up, the directory tree should look like this:|-tools|    |-srilm|    |-boost|    |-mosesdecoderIn the next post, we will walk through the training steps for an SMT system, right from data acquisition, data processing, training to model evaluation.References  http://mt-archive.info/MTS-2007-Koehn-3.pdf  https://www.aclweb.org/anthology/P07-2045.pdf  http://www.statmt.org/moses_steps.html  http://www.speech.sri.com/projects/srilm/download.htmlPlease enable JavaScript to view the comments powered by Disqus.">
     <meta itemprop="datePublished" content="2020-11-23T00:00:00+05:30">
     
 
@@ -323,33 +323,21 @@
 
       <section class="page__content" itemprop="text">
         
-        <!-- 
+        <h3 id="what-is-machine-translation">What is machine translation?</h3>
 
-<div class="feature__wrapper">
+<figure>
+  <img src="http://localhost:4000/assets/images/translate.gif" alt="" />
+  <figcaption>Image source: https://tenor.com/view/google-translate-chan-yumis-arts-gtc-gif-14803317</figcaption>
+</figure>
 
-  
-
-</div>
- -->
-
-<h3 id="what-is-machine-translation">What is machine translation?</h3>
-
-<!-- ![translate](https://media1.tenor.com/images/b890252f9818ba8ed3e8265765d7dc59/tenor.gif?itemid=14803317) -->
-
-<!-- _includes/image.html -->
-<div class="image-wrapper">
-    
-        <img src="http://localhost:4000/assets/images/translate.gif" alt="translate" />
-    
-    
-        <p class="image-caption">Image source: https://tenor.com/view/google-translate-chan-yumis-arts-gtc-gif-14803317</p>
-    
-</div>
 <p>Machine translation is the task for translating from one language lets say <em>English</em> to another language for an instance <em>Japanese</em>. Primarily there are two major techniques to achieve this task, one is Statistical Machine Translation(SMT) and the other is Neural Machine Translation(NMT). The first appraoch converts the translation task to a <code class="language-plaintext highlighter-rouge">noisy channel</code> model while the second one uses a <code class="language-plaintext highlighter-rouge">sequence-to-sequence</code> deeplearning method.</p>
 
 <p>In this post, we will cover the statistical one and to be specific we will walk through the installation for one of the most widely used SMT toolkit: the <code class="language-plaintext highlighter-rouge">mosesdecoder</code>.</p>
-<h3 id="prerequisites">Prerequisites:</h3>
-<pre><code class="language-g++">git 
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++
+git 
 subversion
 automake
 libtool
@@ -367,67 +355,91 @@ autoconf
 doxygen
 p7zip
 gawk
-</code></pre>
+</code></pre></div></div>
+
 <h3 id="step-1-installing-the-prerequisites">Step-1: Installing the prerequisites</h3>
+
 <p>Put all these required libraries inside a file <code class="language-plaintext highlighter-rouge">requirements.txt</code> and install all of them using a single command</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo apt-get install $(cat requirements.txt)
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="si">$(</span><span class="nb">cat </span>requirements.txt<span class="si">)</span>
 </code></pre></div></div>
 
 <h3 id="step-2-installation-of-an-alignment-tool">Step-2: Installation of an alignment tool</h3>
+
 <p>We will install <code class="language-plaintext highlighter-rouge">mgiza++</code> alignment tool which is the multi-threaded version of <code class="language-plaintext highlighter-rouge">giza++</code>.
 Clone the <code class="language-plaintext highlighter-rouge">mgiza++</code> repo</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir tools
-$ cd tools
-$ git clone https://github.com/moses-smt/mgiza.git
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>tools
+<span class="nb">cd </span>tools
+git clone https://github.com/moses-smt/mgiza.git
 </code></pre></div></div>
+
 <p>Building the repo</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd mgiza/mgizapp
-$ cmake .
-$ make
-$ make install
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>mgiza/mgizapp
+cmake <span class="nb">.</span>
+make
+make <span class="nb">install</span>
 </code></pre></div></div>
 
 <h3 id="step-3-language-modelling-toolkit-installation">Step-3: Language modelling toolkit installation</h3>
+
 <p>Mosesdecoder comes with <code class="language-plaintext highlighter-rouge">KenLM</code> as the default language modelling tool. However, we will be installing a third party language modelling tool <code class="language-plaintext highlighter-rouge">SRILM</code>.
 First, change back to <code class="language-plaintext highlighter-rouge">tools/</code> directory.</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir srilm
-$ cd srilm
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>srilm
+<span class="nb">cd </span>srilm
 </code></pre></div></div>
+
 <p>(This step is crucial since <code class="language-plaintext highlighter-rouge">SRILM</code> expands in the current directory and not in a sub-directory)</p>
 
 <p>Register and download the latest srilm tool from the srilm <a href="http://www.speech.sri.com/projects/srilm/download.html">download page</a> which is a <code class="language-plaintext highlighter-rouge">.tgz</code> file and move it to the above directory which was just created.</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tar -xzvf &lt;srilm-version.tgz&gt;
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">tar</span> <span class="nt">-xzvf</span> &lt;srilm-version.tgz&gt;
 </code></pre></div></div>
+
 <p>After this we need to set the <code class="language-plaintext highlighter-rouge">SRILM</code> path in a <code class="language-plaintext highlighter-rouge">Makefile</code>. Specifically, the main path of the <code class="language-plaintext highlighter-rouge">srilm</code> should be pointed in here. The line to be modified looks like this</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SRILM = /home/speech/stolcke/project/srilm/devel
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SRILM <span class="o">=</span> /home/speech/stolcke/project/srilm/devel
 </code></pre></div></div>
+
 <p>which should be modified to</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SRILM = &lt;path/to/your/srilm/main/directory&gt;
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SRILM <span class="o">=</span> &lt;path/to/your/srilm/main/directory&gt;
 </code></pre></div></div>
+
 <p>Then make using</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ make World
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make World
 </code></pre></div></div>
 
 <h3 id="step-4-building-boost">Step-4: Building <code class="language-plaintext highlighter-rouge">boost</code></h3>
+
 <p>Change back to <code class="language-plaintext highlighter-rouge">tools/</code> directory. For this installation, <code class="language-plaintext highlighter-rouge">boost_1_64_0</code> version is used.</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz
-$ unzip the boost 
-$ cd boost_1_64_0/
-$ ./bootstrap.sh 
-$ ./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz
+unzip the boost 
+<span class="nb">cd </span>boost_1_64_0/
+./bootstrap.sh 
+./b2 <span class="nt">-j4</span> <span class="nt">--prefix</span><span class="o">=</span><span class="nv">$PWD</span> <span class="nt">--libdir</span><span class="o">=</span><span class="nv">$PWD</span>/lib64 <span class="nt">--layout</span><span class="o">=</span>system <span class="nb">link</span><span class="o">=</span>static <span class="nb">install</span> <span class="o">||</span> <span class="nb">echo </span>FAILURE
 </code></pre></div></div>
+
 <p><strong>NOTE:</strong> <code class="language-plaintext highlighter-rouge">-j4</code> is for multiprocessing purpose where <code class="language-plaintext highlighter-rouge">4</code> is the number of simulataneous tasks.</p>
 
-<h3 id="step-5-finally-compilation-of-the-moses-tool--with-the-language-modelsrilm">Step-5: Finally compilation of the <code class="language-plaintext highlighter-rouge">moses</code> tool  with the language model(SRILM).</h3>
+<h3 id="step-5-finally-compilation-of-the-moses-tool--with-the-language-modelsrilm">Step-5: Finally compilation of the <code class="language-plaintext highlighter-rouge">moses</code> tool  with the language model(SRILM)</h3>
+
 <p>From the <code class="language-plaintext highlighter-rouge">tools/</code> directory</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone git://github.com/moses-smt/mosesdecoder.git
-$ cd mosesdecoder
-$ ./bjam --with-srilm=&lt;path/to/Srilm&gt; --with-boost=&lt;path/to/boost&gt; -j4
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git://github.com/moses-smt/mosesdecoder.git
+<span class="nb">cd </span>mosesdecoder
+./bjam <span class="nt">--with-srilm</span><span class="o">=</span>&lt;path/to/Srilm&gt; <span class="nt">--with-boost</span><span class="o">=</span>&lt;path/to/boost&gt; <span class="nt">-j4</span>
 </code></pre></div></div>
+
 <p>If the building and linkink was successful, then a <code class="language-plaintext highlighter-rouge">SUCCESS</code> prompt will be shown at the end.</p>
 
 <p>To sum up, the directory tree should look like this:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|-tools
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|-tools
 |    |-srilm
 |    |-boost
 |    |-mosesdecoder
@@ -437,6 +449,7 @@ $ ./bjam --with-srilm=&lt;path/to/Srilm&gt; --with-boost=&lt;path/to/boost&gt; -
 <p>In the next post, we will walk through the training steps for an SMT system, right from data acquisition, data processing, training to model evaluation.</p>
 
 <h3 id="references">References</h3>
+
 <ol>
   <li><a href="http://mt-archive.info/MTS-2007-Koehn-3.pdf">http://mt-archive.info/MTS-2007-Koehn-3.pdf</a></li>
   <li><a href="https://www.aclweb.org/anthology/P07-2045.pdf">https://www.aclweb.org/anthology/P07-2045.pdf</a></li>
@@ -465,15 +478,6 @@ $ ./bjam --with-srilm=&lt;path/to/Srilm&gt; --with-boost=&lt;path/to/boost&gt; -
 
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
-<!-- utterances comment snippet 
-<script src="https://utteranc.es/client.js"
-        repo="masonreznov/masonreznov.github.io"
-        issue-term="pathname"
-        label="comment"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script> -->
 
         
       </section>
