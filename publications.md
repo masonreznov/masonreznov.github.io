@@ -10,9 +10,13 @@ title: ""
 
 ### Journals
 
+- **Salam Michael Singh**, & Thoudam Doren Singh. 2022. An empirical study of low-resource neural machine
+translation of manipuri in multilingual settings. Neural Comput & Applic. (SCIE, IF 5.606)
+
 - Arpita Dutta, **Salam Michael Singh**, & Samir Kumar Borgohain. 2021. Removal of Ambiguity of Noun Using Multimodal Approach. Indian Journal of Computer Science and Engineering (IJCSE). SCOPUS Indexed. [[pdf]](http://www.ijcse.com/docs/INDJCSE21-12-03-207.pdf) 
 
 ### Conferences
+
 - **Salam Michael Singh**, Loitongbam Sanayai Meetei, Alok Singh, Thoudam Doren Singh and Sivaji Bandyopadhyay. 2021. On the Transferability of Massively Multilingual Pretrained Models in the Pretext of the Indo-Aryan and Tibeto-Burman Languages. In Proceedings of the International Conference on Natural Language Processing ICON-2021 (**Accepted**) 
 
 - Loitongbam Sanayai Meetei, **Salam Michael Singh**, Alok Singh, Thoudam Doren Singh and Sivaji Bandyopadhyay. 2021. An Experiment on Speech-to-Text Translation Systems for Manipuri to English on Low Resource Setting. In Proceedings of the International Conference on Natural Language Processing ICON-2021 (**Accepted**)
@@ -26,7 +30,6 @@ title: ""
 - **Salam Michael Singh** and Thoudam Doren Singh. 2020. Unsupervised Neural Machine Translation for English and Manipuri. In the third Workshop on Technologies for MT of Low Resource Languages (LoResMT 2020), in Conjuction with AACL-IJCNLP-2020. Accepted as a research paper. [[pdf]](https://www.aclweb.org/anthology/2020.loresmt-1.10.pdf)[[bib]](https://www.aclweb.org/anthology/2020.loresmt-1.10.bib)
 
 
-
 ### Shared Tasks
-- **Salam Michael Singh**, Thoudam Doren Singh, and Sivaji Bandyopadhyay. 2020. The NITS-CNLP system for the unsupervised machine translation task at WMT 2020. In the Fifth Conference on Machine Translation, in Conjuction with EMNLP 2020. [[pdf]](https://www.aclweb.org/anthology/2020.wmt-1.135.pdf)[[bib]](https://www.aclweb.org/anthology/2020.wmt-1.135.bib) [[RESULT]](http://matrix.statmt.org/matrix/systems_list/1920) Team Name **NITS-CNLP**.
 
+- **Salam Michael Singh**, Thoudam Doren Singh, and Sivaji Bandyopadhyay. 2020. The NITS-CNLP system for the unsupervised machine translation task at WMT 2020. In the Fifth Conference on Machine Translation, in Conjuction with EMNLP 2020. [[pdf]](https://www.aclweb.org/anthology/2020.wmt-1.135.pdf)[[bib]](https://www.aclweb.org/anthology/2020.wmt-1.135.bib) [[RESULT]](http://matrix.statmt.org/matrix/systems_list/1920) Team Name **NITS-CNLP**.

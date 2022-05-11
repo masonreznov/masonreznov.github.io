@@ -1,0 +1,598 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.21.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Installing Moses: The Statistical Machine Translation Tool - Michael’s Blog</title>
+<meta name="description" content="What is machine translation?                                      Image source: https://tenor.com/view/google-translate-chan-yumis-arts-gtc-gif-14803317       Machine translation is the task for translating from one language lets say English to another language for an instance Japanese. Primarily there are two major techniques to achieve this task, one is Statistical Machine Translation(SMT) and the other is Neural Machine Translation(NMT). The first appraoch converts the translation task to a noisy channel model while the second one uses a sequence-to-sequence deeplearning method.  In this post, we will cover the statistical one and to be specific we will walk through the installation for one of the most widely used SMT toolkit: the mosesdecoder. Prerequisites: git  subversion automake libtool zlib1g-dev libboost-all-dev libbz2-dev liblzma-dev python-dev graphviz imagemagick make cmake libgoogle-perftools-dev autoconf doxygen p7zip gawk  Step-1: Installing the prerequisites Put all these required libraries inside a file requirements.txt and install all of them using a single command $ sudo apt-get install $(cat requirements.txt)   Step-2: Installation of an alignment tool We will install mgiza++ alignment tool which is the multi-threaded version of giza++. Clone the mgiza++ repo $ mkdir tools $ cd tools $ git clone https://github.com/moses-smt/mgiza.git  Building the repo $ cd mgiza/mgizapp $ cmake . $ make $ make install   Step-3: Language modelling toolkit installation Mosesdecoder comes with KenLM as the default language modelling tool. However, we will be installing a third party language modelling tool SRILM. First, change back to tools/ directory. $ mkdir srilm $ cd srilm  (This step is crucial since SRILM expands in the current directory and not in a sub-directory)  Register and download the latest srilm tool from the srilm download page which is a .tgz file and move it to the above directory which was just created. $ tar -xzvf &lt;srilm-version.tgz&gt;  After this we need to set the SRILM path in a Makefile. Specifically, the main path of the srilm should be pointed in here. The line to be modified looks like this SRILM = /home/speech/stolcke/project/srilm/devel  which should be modified to SRILM = &lt;path/to/your/srilm/main/directory&gt;  Then make using $ make World   Step-4: Building boost Change back to tools/ directory. For this installation, boost_1_64_0 version is used. $ wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz $ unzip the boost  $ cd boost_1_64_0/ $ ./bootstrap.sh  $ ./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE  NOTE: -j4 is for multiprocessing purpose where 4 is the number of simulataneous tasks.  Step-5: Finally compilation of the moses tool  with the language model(SRILM). From the tools/ directory $ git clone git://github.com/moses-smt/mosesdecoder.git $ cd mosesdecoder $ ./bjam --with-srilm=&lt;path/to/Srilm&gt; --with-boost=&lt;path/to/boost&gt; -j4  If the building and linkink was successful, then a SUCCESS prompt will be shown at the end.  To sum up, the directory tree should look like this: |-tools |    |-srilm |    |-boost |    |-mosesdecoder    In the next post, we will walk through the training steps for an SMT system, right from data acquisition, data processing, training to model evaluation.  References    http://mt-archive.info/MTS-2007-Koehn-3.pdf   https://www.aclweb.org/anthology/P07-2045.pdf   http://www.statmt.org/moses_steps.html   http://www.speech.sri.com/projects/srilm/download.html      Please enable JavaScript to view the comments powered by Disqus.">
+
+
+  <meta name="author" content="Michael Salam">
+  
+  <meta property="article:author" content="Michael Salam">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Michael's Blog">
+<meta property="og:title" content="Installing Moses: The Statistical Machine Translation Tool">
+<meta property="og:url" content="http://localhost:4000/installing-moses-the-statistical-machine-translation-toolkit/">
+
+
+  <meta property="og:description" content="What is machine translation?                                      Image source: https://tenor.com/view/google-translate-chan-yumis-arts-gtc-gif-14803317       Machine translation is the task for translating from one language lets say English to another language for an instance Japanese. Primarily there are two major techniques to achieve this task, one is Statistical Machine Translation(SMT) and the other is Neural Machine Translation(NMT). The first appraoch converts the translation task to a noisy channel model while the second one uses a sequence-to-sequence deeplearning method.  In this post, we will cover the statistical one and to be specific we will walk through the installation for one of the most widely used SMT toolkit: the mosesdecoder. Prerequisites: git  subversion automake libtool zlib1g-dev libboost-all-dev libbz2-dev liblzma-dev python-dev graphviz imagemagick make cmake libgoogle-perftools-dev autoconf doxygen p7zip gawk  Step-1: Installing the prerequisites Put all these required libraries inside a file requirements.txt and install all of them using a single command $ sudo apt-get install $(cat requirements.txt)   Step-2: Installation of an alignment tool We will install mgiza++ alignment tool which is the multi-threaded version of giza++. Clone the mgiza++ repo $ mkdir tools $ cd tools $ git clone https://github.com/moses-smt/mgiza.git  Building the repo $ cd mgiza/mgizapp $ cmake . $ make $ make install   Step-3: Language modelling toolkit installation Mosesdecoder comes with KenLM as the default language modelling tool. However, we will be installing a third party language modelling tool SRILM. First, change back to tools/ directory. $ mkdir srilm $ cd srilm  (This step is crucial since SRILM expands in the current directory and not in a sub-directory)  Register and download the latest srilm tool from the srilm download page which is a .tgz file and move it to the above directory which was just created. $ tar -xzvf &lt;srilm-version.tgz&gt;  After this we need to set the SRILM path in a Makefile. Specifically, the main path of the srilm should be pointed in here. The line to be modified looks like this SRILM = /home/speech/stolcke/project/srilm/devel  which should be modified to SRILM = &lt;path/to/your/srilm/main/directory&gt;  Then make using $ make World   Step-4: Building boost Change back to tools/ directory. For this installation, boost_1_64_0 version is used. $ wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz $ unzip the boost  $ cd boost_1_64_0/ $ ./bootstrap.sh  $ ./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE  NOTE: -j4 is for multiprocessing purpose where 4 is the number of simulataneous tasks.  Step-5: Finally compilation of the moses tool  with the language model(SRILM). From the tools/ directory $ git clone git://github.com/moses-smt/mosesdecoder.git $ cd mosesdecoder $ ./bjam --with-srilm=&lt;path/to/Srilm&gt; --with-boost=&lt;path/to/boost&gt; -j4  If the building and linkink was successful, then a SUCCESS prompt will be shown at the end.  To sum up, the directory tree should look like this: |-tools |    |-srilm |    |-boost |    |-mosesdecoder    In the next post, we will walk through the training steps for an SMT system, right from data acquisition, data processing, training to model evaluation.  References    http://mt-archive.info/MTS-2007-Koehn-3.pdf   https://www.aclweb.org/anthology/P07-2045.pdf   http://www.statmt.org/moses_steps.html   http://www.speech.sri.com/projects/srilm/download.html      Please enable JavaScript to view the comments powered by Disqus.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-11-23T00:00:00+05:30">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/installing-moses-the-statistical-machine-translation-toolkit/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Michael Salam",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Michael's Blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Michael's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about_me/">About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/publications/">Publications</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/images/avatar.png" alt="Michael Salam" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Michael Salam</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Ph.D candidate. NIT Silchar India</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/masonreznov/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/Zombie_Purii" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/michael-salam-93b52074/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin-in" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:salam_rs@cse.nits.ac.in">
+            <meta itemprop="email" content="salam_rs@cse.nits.ac.in" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Installing Moses: The Statistical Machine Translation Tool">
+    <meta itemprop="description" content="What is machine translation?                            Image source: https://tenor.com/view/google-translate-chan-yumis-arts-gtc-gif-14803317    Machine translation is the task for translating from one language lets say English to another language for an instance Japanese. Primarily there are two major techniques to achieve this task, one is Statistical Machine Translation(SMT) and the other is Neural Machine Translation(NMT). The first appraoch converts the translation task to a noisy channel model while the second one uses a sequence-to-sequence deeplearning method.In this post, we will cover the statistical one and to be specific we will walk through the installation for one of the most widely used SMT toolkit: the mosesdecoder.Prerequisites:git subversionautomakelibtoolzlib1g-devlibboost-all-devlibbz2-devliblzma-devpython-devgraphvizimagemagickmakecmakelibgoogle-perftools-devautoconfdoxygenp7zipgawkStep-1: Installing the prerequisitesPut all these required libraries inside a file requirements.txt and install all of them using a single command$ sudo apt-get install $(cat requirements.txt)Step-2: Installation of an alignment toolWe will install mgiza++ alignment tool which is the multi-threaded version of giza++.Clone the mgiza++ repo$ mkdir tools$ cd tools$ git clone https://github.com/moses-smt/mgiza.gitBuilding the repo$ cd mgiza/mgizapp$ cmake .$ make$ make installStep-3: Language modelling toolkit installationMosesdecoder comes with KenLM as the default language modelling tool. However, we will be installing a third party language modelling tool SRILM.First, change back to tools/ directory.$ mkdir srilm$ cd srilm(This step is crucial since SRILM expands in the current directory and not in a sub-directory)Register and download the latest srilm tool from the srilm download page which is a .tgz file and move it to the above directory which was just created.$ tar -xzvf &lt;srilm-version.tgz&gt;After this we need to set the SRILM path in a Makefile. Specifically, the main path of the srilm should be pointed in here. The line to be modified looks like thisSRILM = /home/speech/stolcke/project/srilm/develwhich should be modified toSRILM = &lt;path/to/your/srilm/main/directory&gt;Then make using$ make WorldStep-4: Building boostChange back to tools/ directory. For this installation, boost_1_64_0 version is used.$ wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz$ unzip the boost $ cd boost_1_64_0/$ ./bootstrap.sh $ ./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURENOTE: -j4 is for multiprocessing purpose where 4 is the number of simulataneous tasks.Step-5: Finally compilation of the moses tool  with the language model(SRILM).From the tools/ directory$ git clone git://github.com/moses-smt/mosesdecoder.git$ cd mosesdecoder$ ./bjam --with-srilm=&lt;path/to/Srilm&gt; --with-boost=&lt;path/to/boost&gt; -j4If the building and linkink was successful, then a SUCCESS prompt will be shown at the end.To sum up, the directory tree should look like this:|-tools|    |-srilm|    |-boost|    |-mosesdecoderIn the next post, we will walk through the training steps for an SMT system, right from data acquisition, data processing, training to model evaluation.References  http://mt-archive.info/MTS-2007-Koehn-3.pdf  https://www.aclweb.org/anthology/P07-2045.pdf  http://www.statmt.org/moses_steps.html  http://www.speech.sri.com/projects/srilm/download.htmlPlease enable JavaScript to view the comments powered by Disqus.">
+    <meta itemprop="datePublished" content="2020-11-23T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Installing Moses: The Statistical Machine Translation Tool
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!-- 
+
+<div class="feature__wrapper">
+
+  
+
+</div>
+ -->
+
+<h3 id="what-is-machine-translation">What is machine translation?</h3>
+
+<!-- ![translate](https://media1.tenor.com/images/b890252f9818ba8ed3e8265765d7dc59/tenor.gif?itemid=14803317) -->
+
+<!-- _includes/image.html -->
+<div class="image-wrapper">
+    
+        <img src="http://localhost:4000/assets/images/translate.gif" alt="translate" />
+    
+    
+        <p class="image-caption">Image source: https://tenor.com/view/google-translate-chan-yumis-arts-gtc-gif-14803317</p>
+    
+</div>
+<p>Machine translation is the task for translating from one language lets say <em>English</em> to another language for an instance <em>Japanese</em>. Primarily there are two major techniques to achieve this task, one is Statistical Machine Translation(SMT) and the other is Neural Machine Translation(NMT). The first appraoch converts the translation task to a <code class="language-plaintext highlighter-rouge">noisy channel</code> model while the second one uses a <code class="language-plaintext highlighter-rouge">sequence-to-sequence</code> deeplearning method.</p>
+
+<p>In this post, we will cover the statistical one and to be specific we will walk through the installation for one of the most widely used SMT toolkit: the <code class="language-plaintext highlighter-rouge">mosesdecoder</code>.</p>
+<h3 id="prerequisites">Prerequisites:</h3>
+<pre><code class="language-g++">git 
+subversion
+automake
+libtool
+zlib1g-dev
+libboost-all-dev
+libbz2-dev
+liblzma-dev
+python-dev
+graphviz
+imagemagick
+make
+cmake
+libgoogle-perftools-dev
+autoconf
+doxygen
+p7zip
+gawk
+</code></pre>
+<h3 id="step-1-installing-the-prerequisites">Step-1: Installing the prerequisites</h3>
+<p>Put all these required libraries inside a file <code class="language-plaintext highlighter-rouge">requirements.txt</code> and install all of them using a single command</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo apt-get install $(cat requirements.txt)
+</code></pre></div></div>
+
+<h3 id="step-2-installation-of-an-alignment-tool">Step-2: Installation of an alignment tool</h3>
+<p>We will install <code class="language-plaintext highlighter-rouge">mgiza++</code> alignment tool which is the multi-threaded version of <code class="language-plaintext highlighter-rouge">giza++</code>.
+Clone the <code class="language-plaintext highlighter-rouge">mgiza++</code> repo</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir tools
+$ cd tools
+$ git clone https://github.com/moses-smt/mgiza.git
+</code></pre></div></div>
+<p>Building the repo</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd mgiza/mgizapp
+$ cmake .
+$ make
+$ make install
+</code></pre></div></div>
+
+<h3 id="step-3-language-modelling-toolkit-installation">Step-3: Language modelling toolkit installation</h3>
+<p>Mosesdecoder comes with <code class="language-plaintext highlighter-rouge">KenLM</code> as the default language modelling tool. However, we will be installing a third party language modelling tool <code class="language-plaintext highlighter-rouge">SRILM</code>.
+First, change back to <code class="language-plaintext highlighter-rouge">tools/</code> directory.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir srilm
+$ cd srilm
+</code></pre></div></div>
+<p>(This step is crucial since <code class="language-plaintext highlighter-rouge">SRILM</code> expands in the current directory and not in a sub-directory)</p>
+
+<p>Register and download the latest srilm tool from the srilm <a href="http://www.speech.sri.com/projects/srilm/download.html">download page</a> which is a <code class="language-plaintext highlighter-rouge">.tgz</code> file and move it to the above directory which was just created.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tar -xzvf &lt;srilm-version.tgz&gt;
+</code></pre></div></div>
+<p>After this we need to set the <code class="language-plaintext highlighter-rouge">SRILM</code> path in a <code class="language-plaintext highlighter-rouge">Makefile</code>. Specifically, the main path of the <code class="language-plaintext highlighter-rouge">srilm</code> should be pointed in here. The line to be modified looks like this</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SRILM = /home/speech/stolcke/project/srilm/devel
+</code></pre></div></div>
+<p>which should be modified to</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SRILM = &lt;path/to/your/srilm/main/directory&gt;
+</code></pre></div></div>
+<p>Then make using</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ make World
+</code></pre></div></div>
+
+<h3 id="step-4-building-boost">Step-4: Building <code class="language-plaintext highlighter-rouge">boost</code></h3>
+<p>Change back to <code class="language-plaintext highlighter-rouge">tools/</code> directory. For this installation, <code class="language-plaintext highlighter-rouge">boost_1_64_0</code> version is used.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz
+$ unzip the boost 
+$ cd boost_1_64_0/
+$ ./bootstrap.sh 
+$ ./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE
+</code></pre></div></div>
+<p><strong>NOTE:</strong> <code class="language-plaintext highlighter-rouge">-j4</code> is for multiprocessing purpose where <code class="language-plaintext highlighter-rouge">4</code> is the number of simulataneous tasks.</p>
+
+<h3 id="step-5-finally-compilation-of-the-moses-tool--with-the-language-modelsrilm">Step-5: Finally compilation of the <code class="language-plaintext highlighter-rouge">moses</code> tool  with the language model(SRILM).</h3>
+<p>From the <code class="language-plaintext highlighter-rouge">tools/</code> directory</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone git://github.com/moses-smt/mosesdecoder.git
+$ cd mosesdecoder
+$ ./bjam --with-srilm=&lt;path/to/Srilm&gt; --with-boost=&lt;path/to/boost&gt; -j4
+</code></pre></div></div>
+<p>If the building and linkink was successful, then a <code class="language-plaintext highlighter-rouge">SUCCESS</code> prompt will be shown at the end.</p>
+
+<p>To sum up, the directory tree should look like this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|-tools
+|    |-srilm
+|    |-boost
+|    |-mosesdecoder
+
+</code></pre></div></div>
+
+<p>In the next post, we will walk through the training steps for an SMT system, right from data acquisition, data processing, training to model evaluation.</p>
+
+<h3 id="references">References</h3>
+<ol>
+  <li><a href="http://mt-archive.info/MTS-2007-Koehn-3.pdf">http://mt-archive.info/MTS-2007-Koehn-3.pdf</a></li>
+  <li><a href="https://www.aclweb.org/anthology/P07-2045.pdf">https://www.aclweb.org/anthology/P07-2045.pdf</a></li>
+  <li><a href="http://www.statmt.org/moses_steps.html">http://www.statmt.org/moses_steps.html</a></li>
+  <li><a href="http://www.speech.sri.com/projects/srilm/download.html">http://www.speech.sri.com/projects/srilm/download.html</a></li>
+</ol>
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://https-masonreznov-github-io.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<!-- utterances comment snippet 
+<script src="https://utteranc.es/client.js"
+        repo="masonreznov/masonreznov.github.io"
+        issue-term="pathname"
+        label="comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script> -->
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-11-23T00:00:00+05:30">November 23, 2020</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Installing+Moses%3A+The+Statistical+Machine+Translation+Tool%20http%3A%2F%2Flocalhost%3A4000%2Finstalling-moses-the-statistical-machine-translation-toolkit%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Finstalling-moses-the-statistical-machine-translation-toolkit%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Finstalling-moses-the-statistical-machine-translation-toolkit%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+            
+      </div>
+    </div>
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <!-- <li><strong>Follow:</strong></li> -->
+    
+
+    
+      
+        
+      
+        
+          <li><a href="mailto:salam_rs@cse.nits.ac.in" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> </a></li>
+        
+      
+        
+          <li><a href="https://github.com/masonreznov/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> </a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/Zombie_Purii" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> </a></li>
+        
+      
+        
+          <li><a href="https://linkedin.com/in/michael-salam-93b52074/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin-in" aria-hidden="true"></i> </a></li>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <li><a href="https://scholar.google.com/citations?user=l9RkNuIAAAAJ&hl=en&authuser=1" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-google" aria-hidden="true"></i> </a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> <!--Feed --> </a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Michael Salam. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+
+  
+
+
+
+
+
+  </body>
+</html>
