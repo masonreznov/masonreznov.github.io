@@ -6,6 +6,8 @@ main:
     url: /about_me/
   - title: "Publications"
     url: /publications/
+  - title: "CV"
+    url: /assets/cv/resume.pdf
   # - title: "Contact"
   #   url: /contact/ 
   # - title: "About"

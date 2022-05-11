@@ -14,13 +14,13 @@
 <loc>http://localhost:4000/</loc>
 </url>
 <url>
-<loc>http://localhost:4000/</loc>
-</url>
-<url>
 <loc>http://localhost:4000/publications/</loc>
 </url>
 <url>
+<loc>http://localhost:4000/_pages/home/</loc>
+</url>
+<url>
 <loc>http://localhost:4000/assets/cv/resume.pdf</loc>
-<lastmod>2022-05-11T14:17:31+05:30</lastmod>
+<lastmod>2022-05-11T18:00:18+05:30</lastmod>
 </url>
 </urlset>
