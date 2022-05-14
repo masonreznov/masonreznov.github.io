@@ -10,8 +10,8 @@ title: ""
 
 ### Journals
 
-- **Salam Michael Singh**, & Thoudam Doren Singh. 2022. An empirical study of low-resource neural machine
-translation of manipuri in multilingual settings. Neural Comput & Applic. (SCIE, IF 5.606)
+- **Salam Michael Singh**, & Thoudam Doren Singh. 2022. [An empirical study of low-resource neural machine
+translation of manipuri in multilingual settings](https://link.springer.com/article/10.1007/s00521-022-07337-8). Neural Comput & Applic. **(SCIE, IF 5.606)**
 
 - Arpita Dutta, **Salam Michael Singh**, & Samir Kumar Borgohain. 2021. Removal of Ambiguity of Noun Using Multimodal Approach. Indian Journal of Computer Science and Engineering (IJCSE). SCOPUS Indexed. [[pdf]](http://www.ijcse.com/docs/INDJCSE21-12-03-207.pdf) 
 
