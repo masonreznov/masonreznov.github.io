@@ -130,7 +130,7 @@ Change back to `tools/` directory. For this installation, `boost_1_64_0` version
 
 ```bash
 wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz
-unzip the boost 
+tar -xvzf boost_1_64_0.tar.gz 
 cd boost_1_64_0/
 ./bootstrap.sh 
 ./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE
@@ -143,7 +143,7 @@ cd boost_1_64_0/
 From the `tools/` directory
 
 ```bash
-git clone git://github.com/moses-smt/mosesdecoder.git
+git clone https://github.com/moses-smt/mosesdecoder.git
 cd mosesdecoder
 ./bjam --with-srilm=<path/to/Srilm> --with-boost=<path/to/boost> -j4
 ```
