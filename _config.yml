@@ -75,7 +75,7 @@ naver_site_verification  :
 
 # Social Sharing
 twitter: 
-  username               : # Zombie_Purii
+  username               : # michael_salam_
 facebook:
   username               :
   app_id                 :
@@ -119,7 +119,7 @@ author:
       url: "https://github.com/masonreznov/"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/Zombie_Purii"
+      url: "https://twitter.com/michael_salam_"
     - label: "Linkedin"
       icon: "fab fa-fw fa-linkedin-in"
       url: "https://linkedin.com/in/michael-salam-93b52074/"
@@ -141,7 +141,7 @@ footer:
       url: "https://github.com/masonreznov/"
     - label: ""
       icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/Zombie_Purii"
+      url: "https://twitter.com/michael_salam_"
     - label: ""
       icon: "fab fa-fw fa-linkedin-in"
       url: "https://linkedin.com/in/michael-salam-93b52074/"
