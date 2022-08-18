@@ -65,18 +65,18 @@ intro:
   
   <tr>
         <td valign="top"><strong>[September 2021]</strong></td>
-        <td> Presented a paper <a href = "https://aclanthology.org/2021.mmtlrl-1.2.pdf" >"Multiple Captions Embellished Multilingual Multi-Modal Neural Machine Translation"</a> (MMTLRL-2021), in Conjuction with RANLP-2021.
+        <td> Presented a paper <a href = "https://aclanthology.org/2021.mmtlrl-1.2.pdf" >"Multiple Captions Embellished Multilingual Multi-Modal Neural Machine Translation"</a> (MMTLRL-2021) at <a href="http://ranlp.org/ranlp2021">RANLP 2021</a>.
         </td>
 </tr>
   
  <tr>
         <td valign="top"><strong>[December 2020]</strong></td>
-        <td> Presented a paper <a href = "https://www.aclweb.org/anthology/2020.loresmt-1.10" >"Unsupervised machine translation for English Manipuri"</a> (LoResMT 2020), in Conjuction with AACL-IJCNLP-2020.
+        <td> Presented a paper <a href = "https://www.aclweb.org/anthology/2020.loresmt-1.10" >"Unsupervised machine translation for English Manipuri"</a> (LoResMT 2020) at <a href="https://aclanthology.org/2020.aacl-main.0.pdf">AACL-IJCNLP 2020</a>.
         </td>
 </tr>
 <tr>
         <td valign="top"><strong>[November 2020]</strong></td>
-        <td> Presented a poster for the system description in the Fifth Conference on Machine Translation, in Conjuction with EMNLP 2020. The result of our team <a href = "http://matrix.statmt.org/matrix/systems_list/1920">NITS-CNLP</a>.
+        <td> Presented a poster for the system description in the Fifth Conference on Machine Translation at <a href="https://2020.emnlp.org/">EMNLP 2020<\a>. The result of our team <a href = "http://matrix.statmt.org/matrix/systems_list/1920">NITS-CNLP</a>.
         </td>
 </tr>
 <tr>
