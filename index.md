@@ -76,7 +76,7 @@ intro:
 </tr>
 <tr>
         <td valign="top"><strong>[November 2020]</strong></td>
-        <td> Presented a poster for the system description in the Fifth Conference on Machine Translation at <a href="https://2020.emnlp.org/">EMNLP 2020<\a>. The result of our team <a href = "http://matrix.statmt.org/matrix/systems_list/1920">NITS-CNLP</a>.
+        <td> Presented a poster for the system description in the Fifth Conference on Machine Translation at <a href="https://2020.emnlp.org/">EMNLP 2020</a>. The result of our team <a href="http://matrix.statmt.org/matrix/systems_list/1920">NITS-CNLP</a>.
         </td>
 </tr>
 <tr>
