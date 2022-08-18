@@ -85,16 +85,4 @@ intro:
         </td>
 </tr>
  
- <!-- <tr>
-        <td valign="top"><strong>[November 2020]</strong></td>
-        <td> Presented a poster for the system description in the Fifth Conference on Machine Translation, in Conjuction with EMNLP 2020. The result of our team <a href="http://matrix.statmt.org/matrix/systems_list/1920"><b>NITS-CNLP<b></a>.
-        </td>
-</tr> -->
-
-<!-- <tr>
-        <td valign="top"><strong>[August 2020]</strong></td>
-        <td> Presented a paper "Statistical and Neural Machine Translation Systems of English to Manipuri: A Preliminary Study" in the third International Conference Soft Computing and Signal Processing.
-        </td>
-</tr> -->
-
 </table>
