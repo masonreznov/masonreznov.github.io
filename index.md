@@ -19,7 +19,7 @@ classes:
 #   Hi, my name is Michael Salam and I am a Ph.D. candidate at National Institute of Technology, Silchar, India. My research interest is primarily on Natural Language Processing for low resource languages.
 
 intro: 
-  - excerpt: 'Hi, my name is Michael Salam and I am a Ph.D. candidate at National Institute of Technology, Silchar, India. My research interest is primarily on Natural Language Processing for low resource languages.'
+  - excerpt: 'Hi, my name is Michael Salam. Currently I am working as Research Scientist (AI) at Crimson AI, Mumbai, India. I have a PhD in NLP from National Institute of Technology, Silchar, India. My research interest is primarily on Natural Language Processing for low resource languages.'
 
 ---
 
