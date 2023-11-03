@@ -11,8 +11,9 @@
 # https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/#installing-the-theme
 
 theme                  : "minimal-mistakes-jekyll"
-# remote_theme           : "mmistakes/minimal-mistakes"
-# remote_theme: "mmistakes/minimal-mistakes@4.21.0"
+
+remote_theme: "mmistakes/minimal-mistakes@4.24.0"
+
 
 # minimal_mistakes_skin    : "contrast" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 minimal_mistakes_skin    : "air" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
@@ -23,9 +24,12 @@ title                    : "Michael's Blog"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "Michael Salam"
+
 description              : "Research Scientist (AI) @ Crimson AI | Ph.D"
-url                      : # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
-baseurl                  : # the subpath of your site, e.g. "/blog"
+url                      : "https://masonreznov.github.io/" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+baseurl                  : #/masonreznov # the subpath of your site, e.g. "/blog"
+
+
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : #"/assets/images/banner.png" # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
@@ -75,7 +79,7 @@ naver_site_verification  :
 
 # Social Sharing
 twitter: 
-  username               : # Zombie_Purii
+  username               : # michael_salam_
 facebook:
   username               :
   app_id                 :
@@ -103,8 +107,10 @@ author:
   bio              : "Ph.D candidate. NIT Silchar India"
   location         : "India"
   email            : salam_rs@cse.nits.ac.in
+
   likedin          : https://www.linkedin.com/in/michael-salam-93b52074/
   github          : https://github.com/masonreznov/
+
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
@@ -115,12 +121,14 @@ author:
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
       # url: "https://facebook.com/"
-    # - label: "GitHub"
-    #   icon: "fab fa-fw fa-github"
-    #   url: "https://github.com/masonreznov/"
-    # - label: "Twitter"
-    #   icon: "fab fa-fw fa-twitter-square"
-    #   url: "https://twitter.com/Zombie_Purii"
+=======
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/masonreznov/"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/michael_salam_"
+
     - label: "Linkedin"
       icon: "fab fa-fw fa-linkedin-in"
       url: "https://linkedin.com/in/michael-salam-93b52074/"
@@ -142,7 +150,7 @@ footer:
       url: "https://github.com/masonreznov/"
     - label: ""
       icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/Zombie_Purii"
+      url: "https://twitter.com/michael_salam_"
     - label: ""
       icon: "fab fa-fw fa-linkedin-in"
       url: "https://linkedin.com/in/michael-salam-93b52074/"
