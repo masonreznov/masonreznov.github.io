@@ -9,6 +9,7 @@ title: ""
 
 
 ### Journals
+- **Salam Michael Singh**, & Thoudam Doren Singh. 2022. An empirical study of low-resource neural machine translation of manipuri in multilingual settings. Neural Comput & Applic. (SCIE, IF 5.606)
 
 - **Salam Michael Singh** and Thoudam Doren Singh. 2022. [Low resource machine translation of english-manipuri: A semi-supervised approach](https://doi.org/10.1016/j.eswa.2022.118187) **(SCIE, IF = 8.665)**
 
